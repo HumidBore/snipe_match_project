@@ -1,3 +1,7 @@
 body {
     font-family: 'Slabo 27px', serif;
 }
+
+a, a:hover{
+    color: #17a2b8;  /*colore dei link e dei link quando ci passo sopra il mouse(hover)*/
+}

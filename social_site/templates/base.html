@@ -9,6 +9,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--cdn di fontawesome per le icone-->
+    <script src="https://kit.fontawesome.com/16b1834530.js" crossorigin="anonymous"></script>
     <!-- cdn di Google, perchè ho preso il font da google font-->
     <link href="https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/agora.css' %}">
@@ -19,17 +21,14 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-
-      
-
         <a class="navbar-brand" href="/">AGORA'</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Cosa stai cercando?" aria-label="Search">
+          <form class="form-inline my-2 my-lg-0" action="{% url 'funzione_cerca' %}">
+            <input name="q" class="form-control mr-sm-2" type="search" placeholder="Cosa stai cercando?" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Cerca</button>
           </form>
           

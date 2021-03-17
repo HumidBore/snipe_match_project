@@ -6,19 +6,69 @@
 {% block content %}
 
     {% for post in posts_discussione %}
+        <div class="card my-3">      <!--rivedi le card di bootstrap-->
+            {% if forloop.first and not "pagina" in request.get_full_path %}  <!--solo per il primo post e solo per la prima pagina-->
+                <div class="card-header pb-0"> <!--pb-0 mi mette a 0 il padding bottom-->   
+                    <h3>{{ discussione.titolo }}</h3>
+                    <p class="text-muted">{{ discussione.data_creazione|date:"D d M Y" }}    <!--personalizzo la data con i placeholders, controlla la doc dei tag django-->
+                    <br>in: {{ discussione.sezione_appartenenza }}</p>
+                </div>
+            {% else %}
+                <div class="card-header py-0"> 
+                    <p class="text-muted mb-0">
+                        {{ post.data_creazione|date:"d M Y" }}
+                        {% if request.user == post.autore_post %}
+                            <a href="{% url 'cancella_post' id=discussione.pk pk=post.pk %}"> | <i class="fas fa-trash-alt"></i></a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endif %}
 
-        <h1>{{ discussione.titolo }}</h1>
-        <h2>{{ discussione.data_creazione }}</h2>
-        <h3>in: {{ discussione.sezione_appartenenza }}</h3>
-
-        <div class="card my-3">  <!--rivedi le card di bootstrap-->
-            <div class="card-header">
-                <h3>{{ post.autore_post }}</h3>
-                <h3>{{ post.data_creazione }}</h3>
-                <h3>{{ post.contenuto }}</h3>
-                <h6 class="card-text">{{ sezione.descrizione }}</h6>
+         
+            <div class="card-body">
+                <div class="row">   <!--con row e col organizzo il testo nella card. Voglio le info sull'autore a sx, il contenuto a dx-->
+                    <!--parte a sx, contiene info sull'autore-->
+                    <div class="col-xl-2 col-4">    <!--col-4 serve per quegli schermi non xl (computer), quindi pad esempio per smartphone-->
+                        <p class="mb-0"><a href="{% url 'user_profile' username=post.autore_post.username %}"><strong>{{ post.autore_post }}</strong></a></p>  
+                        <p class="text-muted mb-0">Utente da: {{ post.autore_post.date_joined|date:"M Y" }}</p>    <!--date_joined è un attributo della classe User di Django-->
+                        <p class="text-muted mb-0">Posts: {{ post.autore_post.posts.count }}</p>  <!--Uso la relazione inversa che lega post e autore-->
+                    </div>
+                    <!--parte a dx, contiene contenuto-->
+                    <div class="col-x{{ post.autore_post }}l-10 col-8">
+                        <p class="my-0">{{ post.contenuto|linebreaks }}</p> <!--con linebreaks permetto la creazione di post in cui si può andare a capo-->
+                    </div>
+                </div>
+                <!-- <h6 class="card-text">{{ sezione.descrizione }}</h6> -->
             </div>
         </div>
+        
     {% endfor %}
+
+    <div class="text-right">
+        <span class="step-links">
+            {% if posts_discussione.has_previous %}
+                <a href="?pagina=1">&laquo; prima</a>
+                <a href="?pagina={{ posts_discussione.previous_page_number }}">precedente</a>
+            {% endif %}
+    
+            <span class="current">
+                Pagina {{ posts_discussione.number }} di {{ posts_discussione.paginator.num_pages }}.
+            </span>
+    
+            {% if posts_discussione.has_next %}
+                <a href="?pagina={{ posts_discussione.next_page_number }}">successiva</a>
+                <a href="?pagina={{ posts_discussione.paginator.num_pages }}">ultima &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    {% if request.user.is_authenticated %}
+        {% include 'forum/form_risposta.html' %}    <!--includo la porzione di codice che sta in form_risposta.html-->
+    {% else %}
+        <div class="alert alert-info" role="alert"> <!--con le alert ci mostro quei messaggi azzurrini (perchè di tipo info) di alert -->
+            <!--dopo il login, devo reindirizzare alla discussione in cui ero prima, lo faccio con next (midice il link usccessivo) e request.get_full_path, che mi dà il percorso della richiesta-->
+            Per partecipare alla discussione devi prima effettuare il <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+        </div>
+    {% endif %}
 
 {% endblock content %}

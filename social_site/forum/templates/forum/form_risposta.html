@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+
+<form class="mb-3" action="{% url 'rispondi_a_discussione' pk=discussione.pk %}" method="post">    <!--vado all'url della view con la risposta, specificando qale è prendendo la pk della discussione nel context passto da viualizza_discussionee-->
+    {% csrf_token %}
+    {{ form_risposta|crispy }}  <!--mi prendo il form passato nel context da visualizza_discussione-->
+    <input type="submit" class="btn btn-info" value="Rispondi">
+</form>
