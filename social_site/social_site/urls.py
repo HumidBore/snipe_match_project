@@ -23,7 +23,8 @@ urlpatterns = [
     path('', include('core.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('forum/', include('forum.urls'))
+    path('forum/', include('forum.urls')),
+    path('snipings/', include('betmatcher.urls')),
 ]
 
 if settings.DEBUG:  #ese debug è true devo usare l'url specificato in settings, che mi mette le immagini caricate nella cartella specificata

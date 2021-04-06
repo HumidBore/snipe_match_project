@@ -5,3 +5,35 @@ body {
 a, a:hover{
     color: #17a2b8;  /*colore dei link e dei link quando ci passo sopra il mouse(hover)*/
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+a.page-link, a.page-item:active{
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.page-item.active .page-link {
+    color: #333;
+    background-color: #f1f0ec;
+    border-color: #6c757d;
+}
+
+.form-control[readonly] {
+    background-color: #ffffff;
+}
+
+/* td {
+    text-align: center; 
+} */
+/* .form-group{
+        height:auto;
+        max-height: 200px;
+        overflow-y:auto;
+    } */
+

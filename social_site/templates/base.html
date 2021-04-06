@@ -9,28 +9,53 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <!--cdn di fontawesome per le icone-->
     <script src="https://kit.fontawesome.com/16b1834530.js" crossorigin="anonymous"></script>
+    
     <!-- cdn di Google, perchè ho preso il font da google font-->
     <link href="https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap" rel="stylesheet">
+    
+    
+    <!--  jquery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    
+    <!-- bootstrap table -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+
     <link rel="stylesheet" href="{% static 'css/agora.css' %}">
 
-
-    <title>{% block head_title %}Agorà{% endblock head_title %}</title>
+    
+    <title>{% block head_title %}SnipeMatch{% endblock head_title %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="/">AGORA'</a>
+        <a class="navbar-brand" href="/">SnipeMatch</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form class="form-inline my-2 my-lg-0" action="{% url 'funzione_cerca' %}">
+          <form class="form-inline my-lg-0 mr-2" action="{% url 'funzione_cerca' %}">
             <input name="q" class="form-control mr-sm-2" type="search" placeholder="Cosa stai cercando?" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Cerca</button>
           </form>
+
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Snipings
+              </a>
+              
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'two_outcomes_list' %}">Due esiti</a> <!--link al profilo dello user loggato-->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'three_outcomes_list' %}">Tre esiti</a>
+              </div>
+            </li>
+          </ul>
+
           
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -77,5 +102,258 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- datetime picker scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    <!-- bootstrap table -->
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <script>
+      $(function () {
+        $(".datetimeinput").datetimepicker({
+          format: 'Y-m-d H:i',
+        });
+      });
+    </script>
+
+    <script>  //script to change arrow direction in dropdowns
+      $(document).ready(function(){
+          // Toggle right and down arrow icon on show hide of collapse element
+          $(".collapse").on('show.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-angle-down").addClass("fa-angle-up");
+          }).on('hide.bs.collapse', function(){
+            $(this).prev(".card-header").find(".fa").removeClass("fa-angle-up").addClass("fa-angle-down");
+          });
+      });
+
+      $('.dropdown-menu').on("click.bs.dropdown", function (e) {
+        e.stopPropagation();  //makes dropdwons not hide after clicking  
+      });
+    </script>
+
+    <script>
+      $.fn.setInputValues = function() {
+          var evento = $(this).parents("tr").find(".evento").text();
+          var dataevento = $(this).parents("tr").find(".dataevento").text();
+          
+          var bookmaker1 = $(this).parents("tr").find(".bookmaker1").text();
+          var bet1 = $(this).parents("tr").find(".bet1").text();
+          var betOdd1 = parseFloat($(this).parents("tr").find(".betOdd1").text().replace(',', '.')).toFixed(2);
+          
+          var bookmaker2 = $(this).parents("tr").find(".bookmaker2").text();
+          var bet2 = $(this).parents("tr").find(".bet2").text();
+          var betOdd2 = parseFloat($(this).parents("tr").find(".betOdd2").text().replace(',', '.')).toFixed(2);
+          
+          var bookmaker3 = $(this).parents("tr").find(".bookmaker3").text();
+          var bet3 = $(this).parents("tr").find(".bet3").text();
+          var betOdd3 = parseFloat($(this).parents("tr").find(".betOdd3").text().replace(',', '.')).toFixed(2);
+          
+          var puntata1 = parseInt($('#inputpuntata').val());
+          var puntata2 = Math.round(puntata1 * betOdd1 / betOdd2)
+          var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3)
+
+          if(!(betOdd3>0)) {  //in two outcomes table there is no bet3
+            var betOdd3 = 0;
+            var puntata3 = 0;
+          }
+          
+          var guadagno1esito1 = (puntata1*(betOdd1-1)).toFixed(2)
+          var guadagnoesito1 = (guadagno1esito1-puntata2-puntata3).toFixed(2)
+
+          var guadagno2esito2 = (puntata2*(betOdd2-1)).toFixed(2)
+          var guadagnoesito2 = (guadagno2esito2-puntata1-puntata3).toFixed(2)
+
+          var guadagno3esito3 = (puntata3*(betOdd3-1)).toFixed(2)
+          var guadagnoesito3 = (guadagno3esito3-puntata1-puntata2).toFixed(2)
+
+         
+
+          // CREATING DATA TO SHOW ON MODEL
+          eventName = "<p>"+ evento + " </p>";
+          eventDate = "<p>"+ dataevento + " </p>";
+          bet1 += "  @";
+          bet2 += "  @";
+          bet3 += "  @";
+          descrizionePuntata1 = "Scommetti sull'esito " +bet1+ " " + betOdd1;
+          descrizionePuntata2 = "Scommetti sull'esito " +bet2+ " " + betOdd2;
+          descrizionePuntata3 = "Scommetti sull'esito " +bet3+ " " + betOdd3;
+          
+          //CLEARING THE PREFILLED DATA
+          $("#modalevent").empty();
+          $("#modaldate").empty();
+          $("#modalbet1").empty();
+          $("#modalbet2").empty();
+          $("#modalbet3").empty();
+          $("#modalbookmaker1").empty();
+          $("#modaldescpuntata1").empty();
+          $("#modalbookmaker2").empty();
+          $("#modaldescpuntata2").empty();
+          $("#modalbookmaker3").empty();
+          $("#modaldescpuntata3").empty();
+
+          $("#vincenteesito1").empty();
+          $("#guadagno1esito1").empty();
+          $("#guadagno2esito1").empty();
+          $("#guadagno3esito1").empty();
+          $("#guadagnoesito1").empty();
+          $("#rtpesito1").empty();
+
+          $("#vincenteesito2").empty();
+          $("#guadagno1esito2").empty();
+          $("#guadagno2esito2").empty();
+          $("#guadagno3esito2").empty();
+          $("#guadagnoesito2").empty();
+          $("#rtpesito2").empty();
+
+          $("#vincenteesito3").empty();
+          $("#guadagno1esito3").empty();
+          $("#guadagno2esito3").empty();
+          $("#guadagno3esito3").empty();
+          $("#guadagnoesito3").empty();
+          $("#rtpesito3").empty();
+
+          //WRITING THE DATA ON MODEL
+          $("#modalevent").append(eventName);
+          $("#modaldate").append(eventDate);
+
+          $("#modalbet1").append(bet1);
+          $("#modalbet2").append(bet2);
+          $("#modalbet3").append(bet3);
+
+          $('#inputodd1').val(betOdd1);
+          $('#inputodd2').val(betOdd2);
+          $('#inputodd3').val(betOdd3);
+
+          $('#inputwager').val(puntata1);
+
+          $("#modalbookmaker1").append(bookmaker1);
+          $("#modaldescpuntata1").append(descrizionePuntata1);
+          $('#modalpuntata1').val(puntata1);
+
+          $("#modalbookmaker2").append(bookmaker2);
+          $("#modaldescpuntata2").append(descrizionePuntata2);
+          $('#modalpuntata2').val(puntata2);
+
+          $("#modalbookmaker3").append(bookmaker3);
+          $("#modaldescpuntata3").append(descrizionePuntata3);
+          $('#modalpuntata3').val(puntata3);
+
+          $("#vincenteesito1").append(bookmaker1);
+          $("#guadagno1esito1").append(guadagno1esito1);
+          $("#guadagno2esito1").append(-puntata2);
+          $("#guadagno3esito1").append(-puntata3);
+          $("#guadagnoesito1").append(guadagnoesito1);
+          $("#rtpesito1").append(((1 + guadagnoesito1 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+          $("#vincenteesito2").append(bookmaker2);
+          $("#guadagno1esito2").append(-puntata1);
+          $("#guadagno2esito2").append(guadagno2esito2);
+          $("#guadagno3esito2").append(-puntata3);
+          $("#guadagnoesito2").append(guadagnoesito2);
+          $("#rtpesito2").append(((1 + guadagnoesito2 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+          $("#vincenteesito3").append(bookmaker3);
+          $("#guadagno1esito3").append(-puntata1);
+          $("#guadagno2esito3").append(-puntata2);
+          $("#guadagno3esito3").append(guadagno3esito3);
+          $("#guadagnoesito3").append(guadagnoesito3);
+          $("#rtpesito3").append(((1 + guadagnoesito3 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+      };
+      $.fn.updateInputValues = function() {
+          var betOdd1 = parseFloat($("#inputodd1").val().replace(',', '.')).toFixed(2);
+          var betOdd2 = parseFloat($("#inputodd2").val().replace(',', '.')).toFixed(2);
+          var betOdd3 = parseFloat($("#inputodd3").val().replace(',', '.')).toFixed(2);
+ 
+          var puntata1 = parseInt($('#inputwager').val());
+          var puntata2 = Math.round(puntata1 * betOdd1 / betOdd2);
+          var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
+
+          if(!(betOdd3>0)) {  //in two outcomes table there is no bet3
+            var betOdd3 = 0;
+            var puntata3 = 0;
+          }
+          
+          var guadagno1esito1 = (puntata1*(betOdd1-1)).toFixed(2);
+          var guadagnoesito1 = (guadagno1esito1-puntata2-puntata3).toFixed(2);
+
+          var guadagno2esito2 = (puntata2*(betOdd2-1)).toFixed(2);
+          var guadagnoesito2 = (guadagno2esito2-puntata1-puntata3).toFixed(2);
+
+          var guadagno3esito3 = (puntata3*(betOdd3-1)).toFixed(2);
+          var guadagnoesito3 = (guadagno3esito3-puntata1-puntata2).toFixed(2);
+          
+          
+          //CLEARING THE PREFILLED DATA
+          $("#guadagno1esito1").empty();
+          $("#guadagno2esito1").empty();
+          $("#guadagno3esito1").empty();
+          $("#guadagnoesito1").empty();
+          $("#rtpesito1").empty();
+
+          $("#guadagno1esito2").empty();
+          $("#guadagno2esito2").empty();
+          $("#guadagno3esito2").empty();
+          $("#guadagnoesito2").empty();
+          $("#rtpesito2").empty();
+
+          $("#guadagno1esito3").empty();
+          $("#guadagno2esito3").empty();
+          $("#guadagno3esito3").empty();
+          $("#guadagnoesito3").empty();
+          $("#rtpesito3").empty();
+
+          //WRITING THE DATA ON MODEL
+          $('#modalpuntata1').val(puntata1);
+          $('#modalpuntata2').val(puntata2);
+          $('#modalpuntata3').val(puntata3);
+
+          $("#guadagno1esito1").append(guadagno1esito1);
+          $("#guadagno2esito1").append(-puntata2);
+          $("#guadagno3esito1").append(-puntata3);
+          $("#guadagnoesito1").append(guadagnoesito1);
+          $("#rtpesito1").append(((1 + guadagnoesito1 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+          $("#guadagno1esito2").append(-puntata1);
+          $("#guadagno2esito2").append(guadagno2esito2);
+          $("#guadagno3esito2").append(-puntata3);
+          $("#guadagnoesito2").append(guadagnoesito2);
+          $("#rtpesito2").append(((1 + guadagnoesito2 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+          $("#guadagno1esito3").append(-puntata1);
+          $("#guadagno2esito3").append(-puntata2);
+          $("#guadagno3esito3").append(guadagno3esito3);
+          $("#guadagnoesito3").append(guadagnoesito3);
+          $("#rtpesito3").append(((1 + guadagnoesito3 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          
+      };
+      $(function () {
+        // ON SELECTING ROW
+        $('.wizardselect').click(function () {
+          $(this).setInputValues();
+        });
+        $("#inputwager").on("input", function() {
+          $(this).updateInputValues(); 
+        });
+        $("#inputodd1").on("input", function() {
+          $(this).updateInputValues(); 
+        });
+        $("#inputodd2").on("input", function() {
+          $(this).updateInputValues(); 
+        });
+        $("#inputodd3").on("input", function() {
+          $(this).updateInputValues(); 
+        });
+      });
+    </script>
+
+    
+    
+    <!-- <script>  //update modal fields with new value (e.g. betOdd has changed and the user update it inside the wizard)
+      $("#inputodd3").on("input", function() {
+        $(this).setInputValues(); 
+      });
+      
+    </script> -->
   </body>
 </html>

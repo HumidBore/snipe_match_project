@@ -26,6 +26,7 @@ SECRET_KEY = '*xkl2jb1#tbr+sqmxy&+zal!c7$j)^g&)c=24^%ay^i1_d25!e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = []
 
 
@@ -44,10 +45,17 @@ INSTALLED_APPS = [
     'accounts', #gestisce la registrazione di novi utenti al sito
     'core', #gestisce gli aspetti generali, come la ricerca nel sito
     'forum', #gestisce la parte social, come discussioni e post 
+
+    'betmatcher'
 ]
 
 #per maggiori informazioni visita il sito ufficilae di crispy forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# CRISPY_CLASS_CONVERTERS = {'input-group': "input-group input-group-sm", 
+#                         'numberinput': 'numberinput input-sm',
+#                         'form-control': 'form-control input-sm'
+#                         }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,6 +76,7 @@ TEMPLATES = [
                 BASE_DIR / 'accounts/templates',
                 BASE_DIR / 'core/templates',
                 BASE_DIR / 'forum/templates',
+                BASE_DIR / 'betmatcher/templates',
                 ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -91,8 +100,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
 }
+
+# DATABASE_ROUTERS = ['betmatcher.routers.BetMatcherRouter']
 
 
 # Password validation
@@ -128,6 +139,16 @@ USE_L10N = True
 USE_TZ = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#IMPOSTARE CON LE CREDENZIALI DELL'ACCOUNT CHE SI OCCUPA DI MANDARE LE MAIL DA PARTE DEL SITO
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'django.socialsite.email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'gzX*T12qdr.2t3#'
+# DEFAULT_FROM_EMAIL = 'django.socialsitesupport@gmail.com>'
+# DEFAULT_TO_EMAIL = 'to email'
 
 
 # Static files (CSS, JavaScript, Images)

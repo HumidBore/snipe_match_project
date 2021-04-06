@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+
+{% block head_title %} {{ block.super }} - Due Esiti{% endblock head_title %}
+
+{% block content %}
+<div class="card my-3">
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    <div class="card-header py-2">
+      <div class="row">
+        <button class="btn btn-light fa fa-angle-down mr-auto" type="button" data-toggle="collapse" data-target="#collapseTable" aria-expanded="false" aria-controls="collapseExample">
+          <strong>Filtra</strong>
+        </button>
+        <div class="input-group col-lg-2 mr-2">
+          <p class="mr-1 my-auto"><strong>Puntata:</strong></p>
+          <input type="number" class="form-control col-5 " id="inputpuntata" value="100">
+        </div>
+        <input type="submit" class="btn btn-success" value="Applica!">
+      </div>
+    </div>
+    <div class="card-body collapse" id="collapseTable">
+      <div class="row">        
+        <div class="col-lg-1 ml-auto my-auto">
+          <p>RTP (%):</p>
+        </div>
+        <div class="my-auto col-lg-2">
+          {% crispy_addon form.RTPFrom prepend="da" %}
+        </div>
+        <div class="col-lg-2 my-auto mr-auto">
+          {% crispy_addon form.RTPTo prepend="a" %}
+        </div>
+        <div class="col-lg-1 my-auto ml-auto">
+          <p>Data:</p>
+        </div>
+        <div class="col-lg-2 my-auto mr-3">
+          {% crispy_addon form.dateFrom prepend="da" %}
+        </div>
+        <div class="col-lg-2 my-auto mr-auto">
+          {% crispy_addon form.dateTo prepend="a" %}
+        </div>
+      </div>  
+      <div class="row my-1">
+        <div class="dropdown col-lg-2 ml-auto">
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Bookmaker 1
+          </button>
+          <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+            <div class="container">
+              {{ form.bookmaker1|as_crispy_field }}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1 my-auto">
+          <p>Quota 1:</p>
+        </div>
+        <div class="col-lg-2 mb-0">
+          {% crispy_addon form.betOdd1From prepend="da" %}
+        </div>
+        <div class="col-lg-2 mb-0">
+          {% crispy_addon form.betOdd1To prepend="a" %}
+        </div>
+        <div class="dropdown col-lg-2 mr-auto">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Scommesse 1
+          </button>
+          <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+            <div class="container">
+              {{ form.bet1|as_crispy_field }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="dropdown col-lg-2 ml-auto">
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Bookmaker 2
+          </button>
+          <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+            <div class="container">
+              {{ form.bookmaker2|as_crispy_field }}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1 my-auto">
+          <p>Quota 2:</p>
+        </div>
+        <div class="col-lg-2 mb-0">
+          {% crispy_addon form.betOdd2From prepend="da" %}
+        </div>
+        <div class="col-lg-2 mb-0">
+          {% crispy_addon form.betOdd2To prepend="a" %}
+        </div>
+        <div class="dropdown col-lg-2 mr-auto">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Scommesse 2
+          </button>
+          <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+            <div class="container">
+              {{ form.bet2|as_crispy_field }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="table-responsive" >
+  <table class="table table-sm table-bordered mt-3 col-lg-12" id="table" data-toggle="table" data-locale="it-IT" data-pagination="true"
+          data-page-size="20" data-page-list="[10, 20, 50, 100, 200, All]" data-pagination-pre-text="Precedente" data-pagination-next-text="Successiva">
+    <thead class="thead-dark">
+      <tr>
+        <th class="text-center" scope="col">SELECT</th>
+        <th class="text-center" scope="col">RTP (%)</th>
+        <th class="text-center" scope="col">Evento</th>
+        <th class="text-center" scope="col">Data</th>
+        <th class="text-center" scope="col">Book 1</th>
+        <th class="text-center" scope="col">Bet 1</th>
+        <th class="text-center" scope="col">Quota 1</th>
+        <th class="text-center" scope="col">Book 2</th>
+        <th class="text-center" scope="col">Bet 2</th>
+        <th class="text-center" scope="col">Quota 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for evento in events %}    <!--scandisco la lista ritornata dala listview HomeView-->
+        <tr>
+          <td class="text-center" style="max-width:30px; max-height:25px"><button class="btn wizardselect"
+                      data-toggle="modal" 
+                      data-target="#wizardmodal">
+                      <img src="/media/target.svg" style="width:100%; height:100%"></button></td>
+          <td class="rtp text-center">{{ evento.0 }}</td>    <!--RTP-->
+          <td class="evento text-center">{{ evento.3 }}</td>    <!--Evento-->
+          <td class="dataevento text-center">{{ evento.4|date:"d-m-Y H:i" }}</td>    <!--Data-->
+          <td class="bookmaker1 text-center">{{ evento.5 }}</td>    <!--bookmaker1-->
+          <td class="bet1 text-center">{{ evento.6 }}</td>    <!--bet1-->
+          <td class="betOdd1 text-center">{{ evento.7 }}</td>    <!--betOdd1-->
+          <td class="bookmaker2 text-center">{{ evento.8 }}</td>    <!--bookmaker2-->
+          <td class="bet2 text-center">{{ evento.9 }}</td>    <!--bet2-->
+          <td class="betOdd2 text-center">{{ evento.10 }}</td>    <!--betOdd2-->
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="wizardmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel"><strong>Wizard</strong></h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-2">
+              <p><strong>Evento</strong></p>
+            </div>
+            <div class="col-lg-4 mr-auto" id="modalevent">
+
+            </div>
+
+            <div class="input-group input-group-sm col-lg-5">
+              <p class="ml-auto mr-3"><strong>Quota 1</strong></p>
+              <p class="mx-auto" id="modalbet1"></p>
+              <input type="number" class="form-control col-lg-3" id="inputodd1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">
+              <p><strong>Data</strong></p>
+            </div>
+            <div class="col-lg-4 mr-auto" id="modaldate">
+
+            </div>
+            <div class="input-group input-group-sm col-lg-5">
+              <p class="ml-auto mr-3"><strong>Quota 2</strong></p>
+              <p class="mx-auto" id="modalbet2"></p>
+              <input type="number" class="form-control col-lg-3" id="inputodd2">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">
+              <p><strong>Puntata</strong></p>
+            </div>
+            <div class="input-group input-group-sm col-lg-2 mr-auto">
+              <input type="number" class="form-control" id="inputwager">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8">
+              <strong>Quanto devo scommettere?</strong>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-lg-2 my-auto">
+              <p class="my-auto" id="modalbookmaker1"></p>
+            </div>
+            <div class="input-group col-lg-5">
+              <p id="modaldescpuntata1" class="d-inline my-auto mr-auto"></p>
+              <input type="text" class="form-control col-lg-3 text-center" id="modalpuntata1" readonly>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-lg-2 my-auto">
+              <p class="my-auto" id="modalbookmaker2"></p>
+            </div>
+            <div class="input-group col-lg-5">
+              <p id="modaldescpuntata2" class="d-inline my-auto mr-auto"></p>
+              <input type="text" class="form-control col-lg-3 text-center" id="modalpuntata2" readonly>
+            </div>
+            <!-- <div class="col-lg-5" id="modalpuntata2">
+              
+            </div> -->
+          </div>
+          
+          <div class="row">
+            <div class="table-responsive col-lg-9 mx-auto">
+              <table class="table table-sm table-bordered">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="text-center">Vincente</th>
+                    <th scope="col" class="text-center">Guadagno 1</th>
+                    <th scope="col" class="text-center">Guadagno 2</th>
+                    <th scope="col" class="text-center">Totale</th>
+                    <th scope="col" class="text-center">RTP (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="vincenteesito1" class="text-center"></td>    <!--bookmaker vincente-->
+                    <td id="guadagno1esito1" class="text-center"></td>    <!--guadagno1-->
+                    <td id="guadagno2esito1" class="text-center"></td>    <!--guadagno2-->
+                    <td id="guadagnoesito1" class="text-center"></td>    <!--guadagno3-->
+                    <td id="rtpesito1" class="text-center"></td>    <!--rtpesito1-->
+                  </tr>
+                  <tr>
+                    <td id="vincenteesito2" class="text-center"></td>    <!--bookmaker vincente-->
+                    <td id="guadagno1esito2" class="text-center"></td>    <!--guadagno1-->
+                    <td id="guadagno2esito2" class="text-center"></td>    <!--guadagno2-->
+                    <td id="guadagnoesito2" class="text-center"></td>    <!--guadagnototale-->
+                    <td id="rtpesito2" class="text-center"></td>    <!--rtpesito2-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
