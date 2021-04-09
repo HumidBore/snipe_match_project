@@ -1,5 +1,5 @@
 import sqlite3
-from social_site import settings
+from snipe_match import settings
 import pyodbc
 import re
 
@@ -22,24 +22,14 @@ class EventsGetter:
     SQL_GET_THREE_OUTCOMES_AVAILABLE_BETS = "SELECT DISTINCT bet1 FROM bet_matches_three_outcomes ORDER BY bet1"
 
     #SQLITE
-    DB_NAME = "TESTbetmatcher.db"
-    TABEL_NAME = "test_multiple_spiders"
+    # DB_NAME = "betmatcher.db"
+    # TABEL_NAME = "multiple_spiders_output"
     
     AVAILABLE_BOOKS = []
 
     TWO_OUTCOMES_AVAILABLE_BETS = []
     THREE_OUTCOMES_AVAILABLE_BETS = []
 
-    # @classmethod
-    # def get_available_books(cls):
-    #     if not cls.AVAILABLE_BOOKS:
-    #         azure_connection = pyodbc.connect(cls.params)
-    #         azure_cursor = azure_connection.cursor()
-    #         azure_cursor.execute(cls.SQL_GET_AVAILABLE_BOOKMAKERS)
-    #         cls.AVAILABLE_BOOKS = [f"{s1[0]}" for s1 in azure_cursor.fetchall()]
-    #         azure_cursor.close()
-    #         azure_connection.close()
-    #     return cls.AVAILABLE_BOOKS
     
     @classmethod
     def get_available_bookmakers(cls):
@@ -68,23 +58,6 @@ class EventsGetter:
         else:
             return cls.THREE_OUTCOMES_AVAILABLE_BETS
 
-    # @classmethod
-    # def get_available_bets(cls, table_number):
-    #     if not cls.TWO_OUTCOMES_AVAILABLE_BETS or not cls.THREE_OUTCOMES_AVAILABLE_BETS:    #se uno dei due non c'è, popolo entrambi
-    #         azure_connection = pyodbc.connect(cls.params)
-    #         azure_cursor = azure_connection.cursor()
-    #         azure_cursor.execute(cls.SQL_GET_TWO_OUTCOMES_AVAILABLE_BETS)
-    #         cls.TWO_OUTCOMES_AVAILABLE_BETS = [f"{s1[0]}" for s1 in azure_cursor.fetchall()]
-    #         azure_cursor.execute(cls.SQL_GET_THREE_OUTCOMES_AVAILABLE_BETS)
-    #         cls.THREE_OUTCOMES_AVAILABLE_BETS = [f"{s1[0]}" for s1 in azure_cursor.fetchall()]
-    #         azure_cursor.close()
-    #         azure_connection.close()
-    #     if table_number == 2:
-    #         return cls.TWO_OUTCOMES_AVAILABLE_BETS
-    #     else:
-    #         return cls.THREE_OUTCOMES_AVAILABLE_BETS
-        
-        
     @classmethod
     def get_matches(cls, table_number, **filters): #filters are passed as key word argument
         if table_number == 2:
@@ -97,7 +70,7 @@ class EventsGetter:
                             """
         select_events = cls.add_filters_to_condition(select_events, filters)
            
-        print(select_events)
+        # print(select_events)
 
         azure_connection = pyodbc.connect(cls.params)
         azure_cursor = azure_connection.cursor()   
@@ -181,26 +154,3 @@ class EventsGetter:
         else:
             sql_select += "AND "
         return sql_select, first_condition
-
-
-
-
-
-
-
-
-        # connection = sqlite3.connect(settings.BASE_DIR / cls.DB_NAME)
-        # cursor = connection.cursor()
-        # select_events = f"""SELECT * 
-        #                     from {cls.TABEL_NAME}
-        #                     where betRadarID == "{betRadarID}" 
-        #                     LIMIT 10;
-        #                 """
-        # cursor.execute(select_events)
-        # records = cursor.fetchall()
-        # cursor.close()
-        # connection.close()
-        # return records
-
-
-

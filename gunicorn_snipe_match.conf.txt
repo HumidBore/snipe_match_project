@@ -1,0 +1,6 @@
+[program:snipe_match]
+command = /home/azureadminVM/gunicorn_start.bash                  
+user = azureadminVM	                                  
+stdout_logfile = /home/azureadminVM/logs/gunicorn_supervisor.log  
+redirect_stderr = true                                      
+environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8   

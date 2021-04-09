@@ -1,0 +1,29 @@
+#!/bin/bash
+
+NAME="snipe_match"                                  
+DJANGODIR=/home/azureadminVM/snipe_match                
+SOCKFILE=/home/azureadminVM/django_env/run/gunicorn.sock  
+USER=azureadminVM                                      
+GROUP=azureadminVM                                      
+NUM_WORKERS=3                                      
+DJANGO_SETTINGS_MODULE=snipe_match.settings          
+DJANGO_WSGI_MODULE=snipe_match.wsgi                  
+echo "Starting $NAME as `whoami`"
+
+
+cd $DJANGODIR
+source /home/azureadminVM/django_env/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Create the run directory if it doesn't exist
+
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+exec gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --user=$USER --group=$GROUP \
+  --bind=unix:$SOCKFILE \
+  --log-level=debug \

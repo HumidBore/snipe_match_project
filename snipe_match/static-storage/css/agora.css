@@ -28,6 +28,9 @@ a.page-link, a.page-item:active{
     background-color: #ffffff;
 }
 
+.dropdown-item:active {
+    background-color: #98a6b4;
+}
 /* td {
     text-align: center; 
 } */

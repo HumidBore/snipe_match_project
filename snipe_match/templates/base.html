@@ -243,21 +243,21 @@
           $("#guadagno2esito1").append(-puntata2);
           $("#guadagno3esito1").append(-puntata3);
           $("#guadagnoesito1").append(guadagnoesito1);
-          $("#rtpesito1").append(((1 + guadagnoesito1 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito1").append(((1 + (guadagnoesito1 / puntata1)) * 100).toFixed(2));
           
           $("#vincenteesito2").append(bookmaker2);
           $("#guadagno1esito2").append(-puntata1);
           $("#guadagno2esito2").append(guadagno2esito2);
           $("#guadagno3esito2").append(-puntata3);
           $("#guadagnoesito2").append(guadagnoesito2);
-          $("#rtpesito2").append(((1 + guadagnoesito2 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito2").append(((1 + (guadagnoesito2 / puntata1)) * 100).toFixed(2));
           
           $("#vincenteesito3").append(bookmaker3);
           $("#guadagno1esito3").append(-puntata1);
           $("#guadagno2esito3").append(-puntata2);
           $("#guadagno3esito3").append(guadagno3esito3);
           $("#guadagnoesito3").append(guadagnoesito3);
-          $("#rtpesito3").append(((1 + guadagnoesito3 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito3").append(((1 + (guadagnoesito3 / puntata1)) * 100).toFixed(2));
           
       };
       $.fn.updateInputValues = function() {
@@ -312,19 +312,19 @@
           $("#guadagno2esito1").append(-puntata2);
           $("#guadagno3esito1").append(-puntata3);
           $("#guadagnoesito1").append(guadagnoesito1);
-          $("#rtpesito1").append(((1 + guadagnoesito1 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito1").append(((1 + (guadagnoesito1 / puntata1)) * 100).toFixed(2));
           
           $("#guadagno1esito2").append(-puntata1);
           $("#guadagno2esito2").append(guadagno2esito2);
           $("#guadagno3esito2").append(-puntata3);
           $("#guadagnoesito2").append(guadagnoesito2);
-          $("#rtpesito2").append(((1 + guadagnoesito2 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito2").append(((1 + (guadagnoesito2 / puntata1)) * 100).toFixed(2));
           
           $("#guadagno1esito3").append(-puntata1);
           $("#guadagno2esito3").append(-puntata2);
           $("#guadagno3esito3").append(guadagno3esito3);
           $("#guadagnoesito3").append(guadagnoesito3);
-          $("#rtpesito3").append(((1 + guadagnoesito3 / (puntata1+puntata2+puntata3)) * 100).toFixed(2));
+          $("#rtpesito3").append(((1 + (guadagnoesito3 / puntata1)) * 100).toFixed(2));
           
       };
       $(function () {
