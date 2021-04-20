@@ -5,7 +5,7 @@ from django.contrib.auth.models import User #modello base di django per un utent
 
 class FormRegistrazione(UserCreationForm):
     #oltre ai campi della classe madre, ho bisogno anche della mail
-    email = forms.CharField(max_length=30, required=True, widget=forms.EmailInput()) #
+    email = forms.CharField(max_length=30, required=True, widget=forms.EmailInput())
 
     class Meta:
         model = User    #uso modello base django

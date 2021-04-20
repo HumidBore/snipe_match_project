@@ -146,25 +146,28 @@
           
           var bookmaker3 = $(this).parents("tr").find(".bookmaker3").text();
           var bet3 = $(this).parents("tr").find(".bet3").text();
-          var betOdd3 = parseFloat($(this).parents("tr").find(".betOdd3").text().replace(',', '.')).toFixed(2);
+          // var betOdd3 = parseFloat($(this).parents("tr").find(".betOdd3").text().replace(',', '.')).toFixed(2);
           
           var puntata1 = parseInt($('#inputpuntata').val());
-          var puntata2 = Math.round(puntata1 * betOdd1 / betOdd2)
-          var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3)
+          var puntata2 = Math.round(puntata1 * betOdd1 / betOdd2);
+          // var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
 
-          if(!(betOdd3>0)) {  //in two outcomes table there is no bet3
+          try {
+            var betOdd3 = parseFloat($("#inputodd3").val().replace(',', '.')).toFixed(2);
+            var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
+          } catch (TypeError) {
             var betOdd3 = 0;
             var puntata3 = 0;
           }
           
-          var guadagno1esito1 = (puntata1*(betOdd1-1)).toFixed(2)
-          var guadagnoesito1 = (guadagno1esito1-puntata2-puntata3).toFixed(2)
+          var guadagno1esito1 = (puntata1*(betOdd1-1)).toFixed(2);
+          var guadagnoesito1 = (guadagno1esito1-puntata2-puntata3).toFixed(2);
 
-          var guadagno2esito2 = (puntata2*(betOdd2-1)).toFixed(2)
-          var guadagnoesito2 = (guadagno2esito2-puntata1-puntata3).toFixed(2)
+          var guadagno2esito2 = (puntata2*(betOdd2-1)).toFixed(2);
+          var guadagnoesito2 = (guadagno2esito2-puntata1-puntata3).toFixed(2);
 
-          var guadagno3esito3 = (puntata3*(betOdd3-1)).toFixed(2)
-          var guadagnoesito3 = (guadagno3esito3-puntata1-puntata2).toFixed(2)
+          var guadagno3esito3 = (puntata3*(betOdd3-1)).toFixed(2);
+          var guadagnoesito3 = (guadagno3esito3-puntata1-puntata2).toFixed(2);
 
          
 
@@ -263,13 +266,12 @@
       $.fn.updateInputValues = function() {
           var betOdd1 = parseFloat($("#inputodd1").val().replace(',', '.')).toFixed(2);
           var betOdd2 = parseFloat($("#inputodd2").val().replace(',', '.')).toFixed(2);
-          var betOdd3 = parseFloat($("#inputodd3").val().replace(',', '.')).toFixed(2);
- 
           var puntata1 = parseInt($('#inputwager').val());
           var puntata2 = Math.round(puntata1 * betOdd1 / betOdd2);
-          var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
-
-          if(!(betOdd3>0)) {  //in two outcomes table there is no bet3
+          try {
+            var betOdd3 = parseFloat($("#inputodd3").val().replace(',', '.')).toFixed(2);
+            var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
+          } catch (TypeError) {
             var betOdd3 = 0;
             var puntata3 = 0;
           }
@@ -329,7 +331,7 @@
       };
       $(function () {
         // ON SELECTING ROW
-        $('.wizardselect').click(function () {
+        $('#table').on('click', '.wizardselect', function () {  //
           $(this).setInputValues();
         });
         $("#inputwager").on("input", function() {

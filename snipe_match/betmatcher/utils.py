@@ -17,7 +17,7 @@ class EventsGetter:
     BET_MATCHES_THREE_OUTCOMES_TABLE = "bet_matches_three_outcomes"
 
     #AZURE QUERY
-    SQL_GET_AVAILABLE_BOOKMAKERS = "SELECT DISTINCT bookmaker FROM scraping_results ORDER BY bookmaker"
+    SQL_GET_AVAILABLE_BOOKMAKERS = "SELECT DISTINCT bookmaker1 FROM bet_matches_two_outcomes ORDER BY bookmaker1"
     SQL_GET_TWO_OUTCOMES_AVAILABLE_BETS = "SELECT DISTINCT bet1 FROM bet_matches_two_outcomes ORDER BY bet1"
     SQL_GET_THREE_OUTCOMES_AVAILABLE_BETS = "SELECT DISTINCT bet1 FROM bet_matches_three_outcomes ORDER BY bet1"
 
@@ -147,7 +147,8 @@ class EventsGetter:
         sql_select += "ORDER BY RTP desc;"
         return sql_select
 
-    def check_first_condition(sql_select, first_condition):
+    @classmethod
+    def check_first_condition(cls,sql_select, first_condition):
         if first_condition:
             first_condition = False
             sql_select += "WHERE "
