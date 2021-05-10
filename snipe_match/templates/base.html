@@ -153,8 +153,12 @@
           // var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
 
           try {
-            var betOdd3 = parseFloat($("#inputodd3").val().replace(',', '.')).toFixed(2);
+            var betOdd3 = parseFloat($(this).parents("tr").find(".betOdd3").text().replace(',', '.')).toFixed(2);
             var puntata3 = Math.round(puntata1 * betOdd1 / betOdd3);
+            if (isNaN(betOdd3)) {
+              var betOdd3 = 0;
+              var puntata3 = 0;
+            };
           } catch (TypeError) {
             var betOdd3 = 0;
             var puntata3 = 0;
@@ -285,8 +289,18 @@
           var guadagno3esito3 = (puntata3*(betOdd3-1)).toFixed(2);
           var guadagnoesito3 = (guadagno3esito3-puntata1-puntata2).toFixed(2);
           
+          bet1 = $('#modalbet1').text();
+          bet2 = $('#modalbet2').text();
+          bet3 = $('#modalbet3').text();
+          descrizionePuntata1 = "Scommetti sull'esito " +bet1+ " " + betOdd1;
+          descrizionePuntata2 = "Scommetti sull'esito " +bet2+ " " + betOdd2;
+          descrizionePuntata3 = "Scommetti sull'esito " +bet3+ " " + betOdd3;
           
           //CLEARING THE PREFILLED DATA
+          $("#modaldescpuntata1").empty();
+          $("#modaldescpuntata2").empty();
+          $("#modaldescpuntata3").empty();
+
           $("#guadagno1esito1").empty();
           $("#guadagno2esito1").empty();
           $("#guadagno3esito1").empty();
@@ -306,6 +320,10 @@
           $("#rtpesito3").empty();
 
           //WRITING THE DATA ON MODEL
+          $("#modaldescpuntata1").append(descrizionePuntata1);
+          $("#modaldescpuntata2").append(descrizionePuntata2);
+          $("#modaldescpuntata3").append(descrizionePuntata3);
+
           $('#modalpuntata1').val(puntata1);
           $('#modalpuntata2').val(puntata2);
           $('#modalpuntata3').val(puntata3);
